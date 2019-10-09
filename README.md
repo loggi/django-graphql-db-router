@@ -1,2 +1,2 @@
 # django-graphql-db-router
-Djange Graphql DB Router
+Django Graphql DB Router
