@@ -5,7 +5,7 @@ except ImportError:
         """Dummy class not to break compatibility with django 1.8"""
         pass
 
-from db.router import pin_this_thread, unpin_this_thread
+from .pinning import pin_this_thread, unpin_this_thread
 
 
 class PinningGraphqlDbMiddleware(MiddlewareMixin):
