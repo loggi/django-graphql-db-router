@@ -2,12 +2,12 @@ import copy
 import hashlib
 import os
 import random
-
+from functools import wraps
 from itertools import cycle
 
 from django.conf import settings
 
-from .pinning import this_thread_is_pinned
+from .pinning import this_thread_is_pinned, pin_this_thread, unpin_this_thread
 
 
 def _cycle_and_skew(base_seq, skew):
@@ -49,3 +49,18 @@ class PinningReplicaRouter(object):
 
     def allow_migrate(self, *args, **kwargs):
         return None
+
+
+class in_read_only_database(object):
+    def __enter__(self):
+        pin_this_thread()
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        unpin_this_thread()
+
+    def __call__(self, querying_func):
+        @wraps(querying_func)
+        def inner(*args, **kwargs):
+            with self:
+                return querying_func(*args, **kwargs)
+        return inner
