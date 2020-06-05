@@ -13,7 +13,7 @@ with open('README.md') as readme_file:
     readme = readme_file.read()
 
 install_requirements = [
-    'Django>=1.8,<=1.11.23',
+    'Django>=1.8,<1.11.30',
 ]
 
 setup_requirements = []
